@@ -1,0 +1,24 @@
+﻿<Project Sdk="WixToolset.Sdk/5.0.2">
+  <PropertyGroup>
+    <OutputName>MyMultiArchSetup</OutputName>
+    <package_version>1.0.0</package_version>
+    <DefineConstants>PackageVersion=$(package_version)</DefineConstants>
+    <Platforms>ARM64;x64;x86</Platforms>
+    <OutputPath>..\_bin\$(Configuration)-$(Platform)\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <InstallerPlatform Condition=" '$(Platform)' == 'ARM64'">ARM64</InstallerPlatform>
+    <InstallerPlatform Condition=" '$(Platform)' == 'x64'">x64</InstallerPlatform>
+    <InstallerPlatform Condition=" '$(Platform)' == 'x86'">x86</InstallerPlatform>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(CustomOutputPath)' != '' ">
+    <OutputPath>$(CustomOutputPath)\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <SuppressPdbOutput>True</SuppressPdbOutput>
+  </PropertyGroup>
+  <Import Project="..\Common.props" />
+  <ItemGroup>
+    <PackageReference Include="WixToolset.Util.wixext" Version="5.0.2" />
+  </ItemGroup>
+</Project>

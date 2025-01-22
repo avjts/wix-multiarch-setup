@@ -1,0 +1,5 @@
+/.config/dotnet-tools.json
+/_out/
+/_bin/
+/global-packages/
+/MyMultiArchSetup/.wix/

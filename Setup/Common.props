@@ -1,0 +1,20 @@
+<Project>
+
+  <PropertyGroup>
+    <RootBuildFolder>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)))</RootBuildFolder>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Company>Wizzzard</Company>
+    <Copyright>Copyright © Wizzzard 2025</Copyright>
+    <Product>My MultiArch Setup</Product>
+  </PropertyGroup>
+
+  <!-- To enable signing, set the SignOutput property to true -->
+  <!--
+  <PropertyGroup>
+    <SignOutput>false</SignOutput>
+  </PropertyGroup>
+  -->
+  
+</Project>

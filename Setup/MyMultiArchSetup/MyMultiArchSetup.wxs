@@ -1,0 +1,143 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util">
+
+  <?if $(sys.BUILDARCH) ~= arm64 ?>
+    <?define MsiPackageName="My MultiArch App (Arm64)" ?>
+  <?elseif $(sys.BUILDARCH) ~= x64 ?>
+    <?define MsiPackageName="My MultiArch App (x64)" ?>
+  <?elseif $(sys.BUILDARCH) ~= x86 ?>
+    <?define MsiPackageName="My MultiArch App (x86)" ?>
+  <?endif?>
+  
+  <Package Name="$(var.MsiPackageName)" Language="1033"
+    Version="$(var.PackageVersion)"
+    Manufacturer="Wizzzard"
+    UpgradeCode="CAFEB1BA-2222-2222-2222-123456781234"
+    InstallerVersion="500"
+    >
+
+    <MajorUpgrade AllowSameVersionUpgrades="no"
+                  DowngradeErrorMessage="A newer version of [ProductName] is already installed."/>
+    <MediaTemplate EmbedCab="yes"/>
+
+    <Icon Id="AppIcon" SourceFile="..\..\Apps\Release-$(sys.BUILDARCH)\MyMultiArchApp.exe"/>
+    <Property Id="ARPPRODUCTICON" Value="AppIcon" />
+
+    <!--
+      Bootstrapper UI Level := 0 Unknown, 1 Embedded, 2 None, 3 Passive, 4 Full
+                MSI UILevel := INSTALLUILEVEL_...     2 none, 3 basic, 4 reduced, 5 full
+    -->
+    <Property Id="WIX_BOOTSTRAPPER_UILEVEL" Secure="yes" />
+    <SetProperty Id="WIX_BOOTSTRAPPER_UILEVEL" Value="[UILevel]" After="CostFinalize" Condition="WIX_BOOTSTRAPPER_UILEVEL=&quot;&quot;" />
+
+    <SetProperty Id="Uninstall" Condition="REMOVE" Sequence="execute" After="LaunchConditions" Value="1" />
+    <SetProperty Id="Repair" Condition="REINSTALL" Sequence="execute" After="LaunchConditions" Value="1" />
+    <SetProperty Id="Modify" Condition="Installed AND NOT REMOVE AND NOT REINSTALL" Sequence="execute" After="LaunchConditions" Value="1" />
+    <SetProperty Id="Install" Condition="NOT Installed" Sequence="execute" After="LaunchConditions" Value="1" />
+
+
+    <util:CloseApplication Id="QuitMyApp" Target="[#MyApp_Exe]"
+      ElevatedEndSessionMessage="yes" EndSessionMessage="yes"
+      RebootPrompt="no" TerminateProcess="0" />
+
+
+    <Property Id="WixUnelevatedShellExecTarget" Value="[#MyApp_Exe]" />
+    <SetProperty Id="WixUnelevatedShellExecTarget" Value="[INSTALLFOLDER]Welcome.lnk"
+      Sequence="execute" Before="LaunchApplication"
+      Condition="(NOT REMOVE) AND ((WIX_BOOTSTRAPPER_UILEVEL &gt;= 4) OR (UILevel &gt;= 4))"
+      />
+    <CustomAction Id="LaunchApplication" DllEntry="WixUnelevatedShellExec" BinaryRef="Wix4UtilCA_$(sys.BUILDARCHSHORT)" Impersonate="yes" Return="ignore" />
+
+
+    <util:QueryWindowsWellKnownSIDs />
+
+
+    <InstallExecuteSequence>
+      <Custom Action="override Wix4CloseApplications_$(sys.BUILDARCHSHORT)" After="InstallInitialize" />
+
+      <Custom Action="LaunchApplication" After="InstallFinalize" Condition="Install OR Modify OR Repair" />
+    </InstallExecuteSequence>
+
+    <Feature Id="Main" Level="1">
+        <ComponentGroupRef Id="ProductComponents"/>
+        <ComponentGroupRef Id="DesktopGroup"/>
+        <ComponentGroupRef Id="StartMenuGroup"/>
+    </Feature>
+  </Package>
+
+  <Fragment>
+    <StandardDirectory Id="DesktopFolder" />
+
+    <?if $(sys.BUILDARCH) ~= x86 ?>
+      <?define ProgramFilesFolder = "ProgramFilesFolder" ?>
+    <?elseif $(sys.BUILDARCH) ~= x64 ?>
+      <?define ProgramFilesFolder = "ProgramFiles64Folder" ?>
+    <?elseif $(sys.BUILDARCH) ~= ARM64 ?>
+      <?define ProgramFilesFolder = "ProgramFiles64Folder" ?>
+    <?endif?>
+    <StandardDirectory Id="$(var.ProgramFilesFolder)">
+      <Directory Id="ProgramFilesManufacturerSubFolder" Name="Wizzzard">
+        <Directory Id="INSTALLFOLDER" Name="MyMultiArchApp">
+        </Directory>
+      </Directory>
+    </StandardDirectory>
+
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="StartMenuSubFolder" Name="Wizzzard" />
+    </StandardDirectory>
+  </Fragment>
+
+
+  <Fragment>
+
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+
+      <Component Id="cmpMyAppExe" Guid="CAFEB1BA-2222-2222-2222-000000000001">
+          <File Id="MyApp_Exe" KeyPath="yes" Name="MyMultiArchApp.exe" Source="..\..\Apps\Release-$(sys.BUILDARCH)\MyMultiArchApp.exe" />
+      </Component>
+
+      <Component Id="cmpInitialLaunchLink" Guid="CAFEB1BA-2222-2222-2222-000000000011">
+        <Shortcut Id="WelcomeShortcut"
+                Name="Welcome"
+                Description="Welcome to My App"
+                Target="[#MyApp_Exe]"
+                Arguments="--show-welcome"
+                WorkingDirectory="INSTALLFOLDER" />
+        <CreateFolder />
+      </Component>
+
+    </ComponentGroup>
+
+    <ComponentGroup Id="DesktopGroup" Directory="DesktopFolder">
+      <Component Id="RegistryShortCut" Guid="CAFEB1BA-2222-2222-2222-000000000002">
+
+        <Shortcut Id="ApplicationDesktopShortcut"
+                Name="My Multi-Arch App"
+                Description="My Multi-Arch App"
+                Target="[#MyApp_Exe]"
+                WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="DesktopFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\Wizzzard\MyMultiArchApp" Type="string" Value="" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <ComponentGroup Id="StartMenuGroup" Directory="StartMenuSubFolder">
+
+      <Component Id="ApplicationShortcut" Guid="CAFEB1BA-2222-2222-2222-000000000003">
+        <Shortcut Id="ApplicationStartMenuShortcut"
+                  Name="My Multi-Arch App"
+                  Description="My Multi-Arch App"
+                  Target="[#MyApp_Exe]"
+                  WorkingDirectory="INSTALLFOLDER" >
+          <ShortcutProperty Key="System.AppUserModel.ID" Value="com.wizzzard.mymultiarchapp" />
+          <ShortcutProperty Key="{9F4C2855-9F79-4B39-A8D0-E1D42DE1D5F3}, 26"
+                            Value="{CAFEB1BA-2222-2222-2222-000000000004}" />
+        </Shortcut>
+        <RemoveFolder Id="CleanUpShortCut" Directory="StartMenuSubFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\Wizzzard\MyMultiArchApp" Type="string" Value="" KeyPath="yes" />
+      </Component>
+
+    </ComponentGroup>
+
+  </Fragment>
+</Wix>
