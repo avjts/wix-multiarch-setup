@@ -6,6 +6,7 @@
   </Configurations>
   <Project Path="CppCustomActions/CppCustomActions.vcxproj">
     <Platform Solution="*|x86" Project="Win32" />
+    <Platform Solution="*|ARM64" Project="ARM64EC" />
   </Project>
   <Project Path="CSharpCustomActions/CSharpCustomActions.csproj">
     <Platform Solution="*|ARM64" Project="ARM64" />

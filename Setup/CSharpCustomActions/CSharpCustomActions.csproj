@@ -13,7 +13,7 @@
     <DebugType>embedded</DebugType>
     <ImplicitUsings>disable</ImplicitUsings>
     <Platforms>x64;ARM64;x86</Platforms>
-    <AcceptEula>wix7</AcceptEula>
+    <AcceptEula>wix7;wix8</AcceptEula>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -39,8 +39,8 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="WixToolset.Dtf.CustomAction" Version="7.0.0" />
-    <PackageReference Include="WixToolset.Dtf.WindowsInstaller" Version="7.0.0" />
+    <PackageReference Include="WixToolset.Dtf.CustomAction" Version="8.0.0-build.7" />
+    <PackageReference Include="WixToolset.Dtf.WindowsInstaller" Version="8.0.0-build.7" />
   </ItemGroup>
 
   <ItemGroup>
