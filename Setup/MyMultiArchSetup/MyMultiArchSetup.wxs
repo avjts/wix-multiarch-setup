@@ -10,11 +10,16 @@
   <?endif?>
   
   <Package Name="$(var.MsiPackageName)" Language="1033"
-    Version="$(var.PackageVersion)"
+    Version="$(var.MSIProductVersion)"
     Manufacturer="Wizzzard"
     UpgradeCode="CAFEB1BA-2222-2222-2222-123456781234"
     InstallerVersion="500"
     >
+
+    <SummaryInformation
+      Manufacturer="Wizzzard"
+      Description="MyMutliArchApp $(var.MSIProductVersion)"
+    />
 
     <MajorUpgrade AllowSameVersionUpgrades="no"
                   DowngradeErrorMessage="A newer version of [ProductName] is already installed."/>

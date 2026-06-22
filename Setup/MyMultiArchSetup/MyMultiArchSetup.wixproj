@@ -1,10 +1,12 @@
-﻿<Project Sdk="WixToolset.Sdk/5.0.2">
+﻿<Project Sdk="WixToolset.Sdk/7.0.0">
   <PropertyGroup>
     <OutputName>MyMultiArchSetup</OutputName>
-    <package_version>1.0.0</package_version>
-    <DefineConstants>PackageVersion=$(package_version)</DefineConstants>
+
+    <Version Condition=" '$(Version)' == '' ">1.0.0</Version>
+    <DefineConstants>MSIProductVersion=$(Version)</DefineConstants>
     <Platforms>ARM64;x64;x86</Platforms>
     <OutputPath>..\_bin\$(Configuration)-$(Platform)\</OutputPath>
+    <AcceptEula>wix7</AcceptEula>
   </PropertyGroup>
   <PropertyGroup>
     <InstallerPlatform Condition=" '$(Platform)' == 'ARM64'">ARM64</InstallerPlatform>
@@ -19,6 +21,6 @@
   </PropertyGroup>
   <Import Project="..\Common.props" />
   <ItemGroup>
-    <PackageReference Include="WixToolset.Util.wixext" Version="5.0.2" />
+    <PackageReference Include="WixToolset.Util.wixext" Version="7.0.0" />
   </ItemGroup>
 </Project>

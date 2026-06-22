@@ -7,11 +7,15 @@ FOR /D %%d IN (Debug-* Release-*) DO (
 	CALL :deletefolder %%d
 )
 
+IF "%1"=="all" CALL :deletefolder .vs
+CALL :deletefolder .config
+CALL :deletefolder .wix
 CALL :deletefolder _bin
 CALL :deletefolder _out
 CALL :deletefolder global-packages
 CALL :deletefolder MyMultiArchSetup\.wix
 CALL :deletefolder MyMultiArchSetup\obj
+CALL :delfile dotnet-tools.json
 
 GOTO :EOF
 
