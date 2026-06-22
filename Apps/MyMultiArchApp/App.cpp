@@ -151,8 +151,9 @@ void OnPaint(HWND hWnd, HDC hdc)
 	SetBkMode(hdc, TRANSPARENT);
 	SetTextColor(hdc, RGB(0, 0, 0));
 	SIZE textSize;
-	GetTextExtentPoint32(hdc, version, wcslen(version), &textSize);
-	TextOut(hdc, centerX - textSize.cx / 2, centerY - textSize.cy / 2, version, wcslen(version));
+	int textLength = (int)wcslen(version);
+	GetTextExtentPoint32W(hdc, version, textLength, &textSize);
+	TextOutW(hdc, centerX - textSize.cx / 2, centerY - textSize.cy / 2, version, textLength);
 }
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

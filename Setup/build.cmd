@@ -9,17 +9,22 @@
     @IF "%arch%"=="x86" SET version=1.0
 )
 
-@CD .\MyMultiArchSetup
-dotnet tool run -- wix extension add WixToolset.Util.wixext
-@IF ERRORLEVEL 1 EXIT /B 1
+@PUSHD .\MyMultiArchSetup
+
+dotnet tool run -- wix extension add WixToolset.Util.wixext ^
+ -acceptEula wix7
+@IF ERRORLEVEL 1 POPD & EXIT /B 1
 
 dotnet tool run -- wix build -arch %arch%  MyMultiArchSetup.wxs ^
+ -acceptEula wix7 ^
  -ext WixToolset.Util.wixext ^
- -d PackageVersion=%version%  -o ..\_out\MySimpleAppSetup-%arch%-%version%.msi
+ -d MSIProductVersion=%version%  -o ..\_out\MySimpleAppSetup-%arch%-%version%.msi
+@IF ERRORLEVEL 1 POPD & EXIT /B 1
+
+@POPD
+
+dotnet tool run -- wix msi validate _out\MySimpleAppSetup-%arch%-%version%.msi ^
+ -acceptEula wix7
 @IF ERRORLEVEL 1 EXIT /B 1
 
-@CD ..
-dotnet tool run -- wix msi validate _out\MySimpleAppSetup-%arch%-%version%.msi
-@IF ERRORLEVEL 1 EXIT /B 1
-
-EXIT /B 0
+@EXIT /B 0

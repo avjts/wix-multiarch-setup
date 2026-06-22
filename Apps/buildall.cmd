@@ -1,9 +1,9 @@
 @SET x86version=%1
-@IF "x86version"=="" SET x86version=1.0
+@IF "%x86version%"=="" SET x86version=1.0
 @SET x64version=%2
-@IF "x64version"=="" SET x64version=2.0
+@IF "%x64version%"=="" SET x64version=2.0
 @SET ARM64version=%3
-@IF "ARM64version"=="" SET ARM64version=3.0
+@IF "%ARM64version%"=="" SET ARM64version=3.0
 
 @CD /D "%~dp0"
 

@@ -1,15 +1,22 @@
+# Reproducing an x64 to arm64 upgrade problem
 
-# How to build
+## How to build a set of installers
 
 - Open Visual Studio 2022 Developer Command Prompt
 - cd to the root of this repository
-- run `buildall.cmd`
+- Run `buildall.cmd`
 - You will find three installers in the `Setup\_out\` directory
   - `MySimpleAppSetup-x86-3.2.11.msi`
   - `MySimpleAppSetup-x64-3.8.22.msi`
   - `MySimpleAppSetup-ARM64-4.1.44.msi`
 
-# How to kaboom
+### If you need more installers
+
+- Collect installers from `Setup\_out`. Directory will be cleaned.
+- Run `buildall-additional-installers.cmd`
+- Installers x86-3.2.15, x64-3.8.25, and arm64-4.1.45 will be generated and saved in `Setup\_out`.
+
+## How to kaboom
 
 - Pick Arm64 machine
 - Start sandbox to avoid cluttering your machine
