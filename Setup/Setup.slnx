@@ -4,5 +4,13 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
+  <Project Path="CppCustomActions/CppCustomActions.vcxproj">
+    <Platform Solution="*|x86" Project="Win32" />
+  </Project>
+  <Project Path="CSharpCustomActions/CSharpCustomActions.csproj">
+    <Platform Solution="*|ARM64" Project="ARM64" />
+    <Platform Solution="*|x64" Project="x64" />
+    <Platform Solution="*|x86" Project="x86" />
+  </Project>
   <Project Path="MyMultiArchSetup/MyMultiArchSetup.wixproj" Type="b7dd6f7e-def8-4e67-b5b7-07ef123db6f0" />
 </Solution>

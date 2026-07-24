@@ -21,6 +21,14 @@
   </PropertyGroup>
   <Import Project="..\Common.props" />
   <ItemGroup>
+    <ProjectReference Include="..\CppCustomActions\CppCustomActions.vcxproj">
+      <SetPlatform>Platform=$(InstallerPlatform)</SetPlatform>
+    </ProjectReference>
+    <ProjectReference Include="..\CSharpCustomActions\CSharpCustomActions.csproj">
+      <SetPlatform>Platform=$(InstallerPlatform)</SetPlatform>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="WixToolset.Util.wixext" Version="7.0.0" />
   </ItemGroup>
 </Project>

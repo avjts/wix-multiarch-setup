@@ -1,7 +1,10 @@
 /dotnet-tools.json
 /.config/dotnet-tools.json
 /_out/
-/_bin/
+_bin/
+_obj/
+obj/
+/packages/
 /global-packages/
 /localNuget/*.nupkg
 /MyMultiArchSetup/.wix/

@@ -4,5 +4,6 @@
     <Platform Name="Win32" />
     <Platform Name="x64" />
   </Configurations>
+  <Project Path="migrate/migrate.vcxproj" Id="1576b4bc-b311-4975-a0b6-dc039995097b" />
   <Project Path="MyMultiArchApp/MyMultiArchApp.vcxproj" Id="6b3bfad9-533c-4898-8610-00bdca6b2dcf" />
 </Solution>

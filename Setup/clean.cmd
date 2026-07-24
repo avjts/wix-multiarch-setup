@@ -13,10 +13,13 @@ CALL :deletefolder .wix
 CALL :deletefolder _bin
 CALL :deletefolder _out
 CALL :deletefolder global-packages
+CALL :deletefolder packages
 CALL :deletefolder MyMultiArchSetup\.wix
 CALL :deletefolder MyMultiArchSetup\obj
+CALL :deletefolder CppCustomActions\_bin
+CALL :deletefolder CppCustomActions\_obj
+CALL :deletefolder CSharpCustomActions\obj
 CALL :delfile dotnet-tools.json
-
 GOTO :EOF
 
 
