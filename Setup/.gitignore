@@ -3,4 +3,5 @@
 /_out/
 /_bin/
 /global-packages/
+/localNuget/*.nupkg
 /MyMultiArchSetup/.wix/
