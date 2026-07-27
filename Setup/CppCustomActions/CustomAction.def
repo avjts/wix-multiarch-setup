@@ -1,0 +1,4 @@
+LIBRARY "CppCustomActions"
+
+EXPORTS
+	InitialBackup

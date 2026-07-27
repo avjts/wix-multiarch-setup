@@ -8,5 +8,5 @@ dotnet new tool-manifest
 
 @:workspaceready
 
-dotnet tool install --local wix --version 7.0.0
+dotnet tool install --local wix --version 8.0.0-build.7
 dotnet tool restore

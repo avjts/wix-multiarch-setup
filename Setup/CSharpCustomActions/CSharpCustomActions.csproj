@@ -1,0 +1,52 @@
+﻿<Project>
+  <!--
+    to sign the output binary (by overriding DependsOn properties) you must use manual explicit imports
+    instead of <Project Sdk="Microsoft.NET.Sdk"> implicit Sdk import
+    https://learn.microsoft.com/en-us/visualstudio/msbuild/how-to-extend-the-visual-studio-build-process?view=vs-2022#extend-the-dependson-properties
+  -->
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <OutputPath>..\_bin\$(Configuration)\</OutputPath>
+    <TargetFramework>net472</TargetFramework>
+    <DebugType>embedded</DebugType>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Platforms>x64;ARM64;x86</Platforms>
+    <AcceptEula>wix7;wix8</AcceptEula>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetPlatform Condition=" '$(TargetPlatform)' == '' ">$(Platform)</TargetPlatform>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+  </PropertyGroup>
+
+  <Import Project="..\Common.props" />
+
+  <ItemGroup>
+    <Content Include="CustomAction.config" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="WixToolset.Dtf.CustomAction" Version="8.0.0-build.7" />
+    <PackageReference Include="WixToolset.Dtf.WindowsInstaller" Version="8.0.0-build.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\Apps\$(Configuration)-$(TargetPlatform)\migrate.exe" Link="migrate.exe" />
+  </ItemGroup>
+
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+
+</Project>

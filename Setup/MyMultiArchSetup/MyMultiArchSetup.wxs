@@ -56,9 +56,26 @@
 
     <util:QueryWindowsWellKnownSIDs />
 
+    <Binary Id="CSharpCustomActions" SourceFile="$(var.CSharpCustomActions.TargetDir)CSharpCustomActions.CA.dll" />
+    <Binary Id="CppCustomActions" SourceFile="$(var.CppCustomActions.TargetDir)\CppCustomActions.dll" />
+
+    <SetProperty Id="caPreparations" Action="BuildInitPrepsParams" Before="caPreparations" Sequence="execute"
+              Value="EnableAutoStart=[ENABLEAUTOSTART];DisableAutoStart=[DISABLEAUTOSTART];" />
+
+    <CustomAction Id="caPreparations" BinaryRef="CSharpCustomActions" Return="check" Execute="deferred"
+                  DllEntry="Preparations" HideTarget="no" Impersonate="no" />
+
+    <!-- C++ Custom actions -->
+    <CustomAction Id="caInitialBackup" BinaryRef="CppCustomActions" Return="check" Execute="immediate"
+              DllEntry="InitialBackup" HideTarget="no" Impersonate="yes" />
+
 
     <InstallExecuteSequence>
+      <Custom Action="caInitialBackup" Before="RemoveExistingProducts" Condition="Install OR Modify" />
+
       <Custom Action="override Wix4CloseApplications_$(sys.BUILDARCHSHORT)" After="InstallInitialize" />
+
+      <Custom Action="caPreparations" After="InstallFiles" Condition="Install OR Modify" />
 
       <Custom Action="LaunchApplication" After="InstallFinalize" Condition="Install OR Modify OR Repair" />
     </InstallExecuteSequence>
